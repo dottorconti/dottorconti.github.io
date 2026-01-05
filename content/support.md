@@ -3,6 +3,7 @@ title: "Support My Work"
 ---
 
 If you find my projects useful and want to support my work, you can make a donation via PayPal.
+https://www.paypal.com/donate/?hosted_button_id=BWJ8RY93S56CQ
 
 <div class="support-box">
     <h2>☕ Buy Me a Coffee</h2>

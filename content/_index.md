@@ -2,7 +2,7 @@
 title: "Home"
 ---
 
-Hi! I'm **Dottorconti**, an electronics enthusiast working on **arcade**, **pinball**, and **hardware projects**.
+Hi! I'm an electronics enthusiast working on **arcade**, **pinball**, and **hardware projects**.
 
 I share my work as **open source** on GitHub, including schematics, PCB designs, and firmware for classic arcade and pinball machine repairs and upgrades.
 

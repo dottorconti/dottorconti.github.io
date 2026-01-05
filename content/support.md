@@ -7,7 +7,7 @@ If you find my projects useful and want to support my work, you can make a donat
 <div class="support-box">
     <h2>☕ Buy Me a Coffee</h2>
     <p>Your support helps me create more open source hardware projects!</p>
-    <a href="https://www.paypal.com/paypalme/yourusername" target="_blank" class="paypal-button">
+    <a href="https://www.paypal.com/donate/?hosted_button_id=BWJ8RY93S56CQ" target="_blank" class="paypal-button">
         Donate via PayPal
     </a>
 </div>

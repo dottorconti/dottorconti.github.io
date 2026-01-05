@@ -1,0 +1,4 @@
+baseURL = "https://dottorconti.github.io/"
+languageCode = "en-us"
+title = "Dottorconti"
+theme = "portfolio"

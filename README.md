@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dottorconti GitHub Pages
 
 Personal portfolio and project showcase built with Hugo and hosted on GitHub Pages.
@@ -42,3 +43,6 @@ If you find my projects useful, consider [supporting my work](https://dottorcont
 
 Code: MIT License  
 Content: CC BY-SA 4.0
+=======
+# dottorconti.github.io
+>>>>>>> 365129ca34a064820e2af5e2c5964938bd049337

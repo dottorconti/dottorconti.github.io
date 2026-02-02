@@ -3,7 +3,7 @@
   "releases": [
     {
       "tag": "v1.3.8",
-      "date": "2026-02-02T15:20:34.747596Z",
+      "date": "2026-02-02T23:50:18.880755Z",
       "assets": {
         "1B1125_v1": "/ZacPin-Audio/releases/v1.3.8/firmware-1B1125_Z1G.bin",
         "1B1146_v1": "/ZacPin-Audio/releases/v1.3.8/firmware-1B1146_v1_Z1GAudio.bin",

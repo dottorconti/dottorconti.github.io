@@ -4,9 +4,10 @@
  */
 
 // Configuration
-const GITHUB_REPO = 'dottorconti/ZacPin-Audio';
-const GITHUB_API = `https://api.github.com/repos/${GITHUB_REPO}`;
-const RELEASE_API = `${GITHUB_API}/releases`;
+const DEFAULT_MANIFEST_URL = '/ZacPin-Audio/releases/manifest.json';
+const MANIFEST_URL =
+    new URLSearchParams(window.location.search).get('manifest') ||
+    DEFAULT_MANIFEST_URL;
 
 // Board definitions
 const BOARDS = [
@@ -65,13 +66,14 @@ const BOARDS = [
 let selectedBoard = null;
 let selectedVersion = null;
 let manifest = null;
+let releases = [];
 
 /**
  * Initialize on page load
  */
 document.addEventListener('DOMContentLoaded', () => {
     populateBoardSelector();
-    loadVersions();
+    loadManifest();
     setupEventListeners();
 });
 
@@ -90,38 +92,39 @@ function populateBoardSelector() {
 }
 
 /**
- * Load available firmware versions from GitHub Releases
+ * Load available firmware versions from local manifest
  */
-async function loadVersions() {
+async function loadManifest() {
     try {
         showStatus('Loading available versions...', 'info');
-        
-        const response = await fetch(RELEASE_API, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        });
-        
+
+        const response = await fetch(MANIFEST_URL, { cache: 'no-store' });
+
         if (!response.ok) {
-            throw new Error(`GitHub API error: ${response.status}`);
+            if (response.status === 404) {
+                showStatus(
+                    `Manifest not found (404). Expected at: ${MANIFEST_URL}`,
+                    'error'
+                );
+                return;
+            }
+            throw new Error(`Manifest error: ${response.status}`);
         }
-        
-        const releases = await response.json();
-        
-        // Filter out drafts and pre-releases (optional)
-        const stableReleases = releases.filter(r => !r.draft); // Keep pre-releases
-        
-        if (stableReleases.length === 0) {
-            showStatus('No firmware versions found. Check back later.', 'warning');
+
+        manifest = await response.json();
+        releases = Array.isArray(manifest.releases) ? manifest.releases : [];
+
+        if (releases.length === 0) {
+            showStatus('No firmware versions found in manifest.', 'warning');
             return;
         }
-        
-        populateVersionSelector(stableReleases);
+
+        populateVersionSelector(releases);
         hideStatus();
-        
+
     } catch (error) {
-        console.error('Error loading versions:', error);
-        showStatus(`Error loading versions: ${error.message}`, 'error');
+        console.error('Error loading manifest:', error);
+        showStatus(`Error loading manifest: ${error.message}`, 'error');
     }
 }
 
@@ -139,9 +142,9 @@ function populateVersionSelector(releases) {
     
     releases.forEach(release => {
         const option = document.createElement('option');
-        option.value = release.tag_name;
-        option.textContent = `${release.tag_name} (${new Date(release.published_at).toLocaleDateString()})`;
-        option.dataset.releaseId = release.id;
+        option.value = release.tag;
+        const releaseDate = release.date ? new Date(release.date).toLocaleDateString() : 'n/a';
+        option.textContent = `${release.tag} (${releaseDate})`;
         select.appendChild(option);
     });
 }
@@ -186,46 +189,26 @@ function onVersionSelected(event) {
         return;
     }
     
-    const option = event.target.options[event.target.selectedIndex];
-    const releaseId = option.dataset.releaseId;
-    
-    // Fetch full release details
-    fetchReleaseDetails(versionTag, releaseId);
-}
+    selectedVersion = releases.find(r => r.tag === versionTag) || null;
 
-/**
- * Fetch full release details including assets
- */
-async function fetchReleaseDetails(tag, releaseId) {
-    try {
-        const response = await fetch(`${RELEASE_API}/tags/${tag}`, {
-            headers: {
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch release details: ${response.status}`);
-        }
-        
-        const release = await response.json();
-        selectedVersion = release;
-        
-        // Update version info
-        const date = new Date(release.published_at);
-        const assets = release.assets.length;
-        
-        document.getElementById('version-info').innerHTML = `
-            <strong>${release.tag_name}</strong> - ${date.toLocaleDateString()}<br>
-            ${assets} firmware variants available
-        `;
-        
+    if (!selectedVersion) {
+        showStatus('Selected version not found in manifest.', 'error');
         updateFlashButtonState();
-        
-    } catch (error) {
-        console.error('Error fetching release details:', error);
-        showStatus(`Error fetching release details: ${error.message}`, 'error');
+        return;
     }
+
+    const assetsCount = selectedVersion.assets
+        ? Object.keys(selectedVersion.assets).length
+        : 0;
+    const date = selectedVersion.date ? new Date(selectedVersion.date) : null;
+    const dateText = date ? date.toLocaleDateString() : 'n/a';
+
+    document.getElementById('version-info').innerHTML = `
+        <strong>${selectedVersion.tag}</strong> - ${dateText}<br>
+        ${assetsCount} firmware variants available
+    `;
+
+    updateFlashButtonState();
 }
 
 /**
@@ -246,14 +229,14 @@ async function onFlashClick() {
     }
     
     // Find the firmware binary for selected board
-    const firmwareAsset = selectedVersion.assets.find(asset => 
-        asset.name.includes(selectedBoard.key)
-    );
-    
-    if (!firmwareAsset) {
+    const firmwarePath = selectedVersion.assets
+        ? selectedVersion.assets[selectedBoard.key]
+        : null;
+
+    if (!firmwarePath) {
         showStatus(
             `Firmware binary not found for ${selectedBoard.name}. ` +
-            `Available: ${selectedVersion.assets.map(a => a.name).join(', ')}`,
+            `Check the manifest mapping for ${selectedBoard.key}.`,
             'error'
         );
         return;
@@ -264,8 +247,9 @@ async function onFlashClick() {
     
     try {
         // Download firmware
-        showStatus(`Downloading ${firmwareAsset.name}...`, 'info');
-        const firmwareData = await downloadBinary(firmwareAsset.browser_download_url);
+        showStatus(`Downloading ${selectedBoard.name} firmware...`, 'info');
+        const firmwareUrl = resolveUrl(firmwarePath);
+        const firmwareData = await downloadBinary(firmwareUrl);
         
         // Get port
         showStatus('Please select your ESP32 COM port...', 'info');
@@ -293,6 +277,17 @@ async function downloadBinary(url) {
         throw new Error(`Download failed: ${response.status}`);
     }
     return await response.arrayBuffer();
+}
+
+/**
+ * Resolve relative/absolute URLs
+ */
+function resolveUrl(path) {
+    try {
+        return new URL(path, window.location.href).toString();
+    } catch (error) {
+        return path;
+    }
 }
 
 /**

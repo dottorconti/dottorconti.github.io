@@ -277,9 +277,9 @@ async function flashFirmware(port, firmwareData, board) {
         updateProgress(50, 'Flashing firmware...');
         
         // Perform reset-to-bootload sequence
-        await port.setSignals({ dtr: false, rts: true });
+        await port.setSignals({ dataTerminalReady: false, requestToSend: true });
         await new Promise(r => setTimeout(r, 100));
-        await port.setSignals({ dtr: true, rts: false });
+        await port.setSignals({ dataTerminalReady: true, requestToSend: false });
         await new Promise(r => setTimeout(r, 100));
         
         // Here you would use the actual flashing protocol

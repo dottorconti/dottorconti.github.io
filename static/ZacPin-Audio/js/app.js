@@ -155,7 +155,7 @@ function populateVersionSelector(releases) {
 function setupEventListeners() {
     document.getElementById('board-select').addEventListener('change', onBoardSelected);
     document.getElementById('version-select').addEventListener('change', onVersionSelected);
-    document.getElementById('flash-button').addEventListener('click', onFlashClick);
+    // Flash button is now handled by esp-web-install-button component
 }
 
 /**
@@ -216,18 +216,26 @@ function onVersionSelected(event) {
  */
 function updateFlashButtonState() {
     const button = document.getElementById('flash-button');
-    button.disabled = !selectedBoard || !selectedVersion;
+    const ready = selectedBoard && selectedVersion;
+
+    if (!ready) {
+        button.setAttribute('disabled', 'true');
+        button.removeAttribute('manifest');
+        return;
+    }
+
+    button.removeAttribute('disabled');
+    prepareInstallManifest();
 }
 
 /**
- * Handle flash button click
+ * Prepare install manifest for esp-web-install-button
  */
-async function onFlashClick() {
+function prepareInstallManifest() {
     if (!selectedBoard || !selectedVersion) {
-        showStatus('Please select a board and version', 'warning');
         return;
     }
-    
+
     // Find the firmware binary for selected board
     const firmwarePath = selectedVersion.assets
         ? selectedVersion.assets[selectedBoard.key]
@@ -241,42 +249,27 @@ async function onFlashClick() {
         );
         return;
     }
-    
-    // Show progress
-    document.getElementById('progress').style.display = 'block';
-    
-    try {
-        // Download firmware
-        showStatus(`Downloading ${selectedBoard.name} firmware...`, 'info');
-        const firmwareUrl = resolveUrl(firmwarePath);
-        const firmwareData = await downloadBinary(firmwareUrl);
-        
-        // Get port
-        showStatus('Please select your ESP32 COM port...', 'info');
-        const port = await navigator.serial.requestPort();
-        
-        // Flash using esp-web-install-button library
-        await flashFirmware(port, firmwareData, selectedBoard);
-        
-        showStatus(`✅ Firmware successfully flashed to ${selectedBoard.name}!`, 'success');
-        document.getElementById('progress').style.display = 'none';
-        
-    } catch (error) {
-        console.error('Flashing error:', error);
-        showStatus(`Flash failed: ${error.message}`, 'error');
-        document.getElementById('progress').style.display = 'none';
-    }
-}
 
-/**
- * Download binary from URL
- */
-async function downloadBinary(url) {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`Download failed: ${response.status}`);
-    }
-    return await response.arrayBuffer();
+    // Create manifest for esp-web-install-button
+    const installManifest = {
+        name: `ZacPin Audio - ${selectedBoard.name}`,
+        version: selectedVersion.tag || selectedVersion.version || 'unknown',
+        builds: [
+            {
+                chipFamily: selectedBoard.mcu || 'ESP32',
+                parts: [
+                    { path: resolveUrl(firmwarePath), offset: 0x10000 }
+                ]
+            }
+        ]
+    };
+
+    const blob = new Blob([JSON.stringify(installManifest)], { type: 'application/json' });
+    const manifestUrl = URL.createObjectURL(blob);
+
+    const button = document.getElementById('flash-button');
+    button.setAttribute('manifest', manifestUrl);
+    showStatus(`Ready to flash ${selectedBoard.name}`, 'info');
 }
 
 /**
@@ -287,37 +280,6 @@ function resolveUrl(path) {
         return new URL(path, window.location.href).toString();
     } catch (error) {
         return path;
-    }
-}
-
-/**
- * Flash firmware using Web Serial API
- * This is a simplified version - the actual flashing is delegated to esp-web-install-button
- */
-async function flashFirmware(port, firmwareData, board) {
-    try {
-        await port.open({ baudRate: 115200 });
-        
-        // Update progress
-        updateProgress(50, 'Flashing firmware...');
-        
-        // Perform reset-to-bootload sequence
-        await port.setSignals({ dtr: false, rts: true });
-        await new Promise(r => setTimeout(r, 100));
-        await port.setSignals({ dtr: true, rts: false });
-        await new Promise(r => setTimeout(r, 100));
-        
-        // Here you would use the actual flashing protocol
-        // For now, we show a placeholder
-        updateProgress(100, 'Flash complete!');
-        
-        await port.close();
-        
-    } catch (error) {
-        if (port.writable) {
-            await port.close();
-        }
-        throw error;
     }
 }
 

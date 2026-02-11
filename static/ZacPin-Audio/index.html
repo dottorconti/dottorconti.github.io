@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZacPin Audio - Firmware Installer</title>
-    <script type="module" src="https://github.com/esphome/esp-web-install-button/releases/download/v3.4.0/bundle.js"></script>
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -55,16 +55,13 @@
                     </div>
 
                     <div id="esp-web-install-button">
-                        <esp-web-install-button 
-                            id="install-btn"
-                            manifest="https://api.github.com/repos/dottorconti/ZacPin-Audio/releases/latest"
-                            style="display: none;">
+                        <esp-web-install-button
+                            id="flash-button"
+                            class="btn btn-primary btn-large"
+                            install-text="⚡ Flash Firmware"
+                            disabled>
                         </esp-web-install-button>
                     </div>
-
-                    <button id="flash-button" class="btn btn-primary btn-large" disabled>
-                        ⚡ Flash Firmware
-                    </button>
                 </div>
 
                 <!-- Progress -->

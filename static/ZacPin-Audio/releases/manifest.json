@@ -1,6 +1,19 @@
 {
-  "latest": "v1.3.8",
+  "latest": "v1.3.11",
   "releases": [
+    {
+      "tag": "v1.3.11",
+      "date": "2026-02-11T23:47:11.181531Z",
+      "assets": {
+        "1B1125_v1": "/ZacPin-Audio/releases/v1.3.11/firmware-1B1125_Z1G.bin",
+        "1B1146_v1": "/ZacPin-Audio/releases/v1.3.11/firmware-1B1146_v1_Z1GAudio.bin",
+        "1B1146_v2": "/ZacPin-Audio/releases/v1.3.11/firmware-1B1146_v2_Z1GAudio.bin",
+        "1B11136": "/ZacPin-Audio/releases/v1.3.11/firmware-1B11136_Z2G.bin",
+        "1B1170": "/ZacPin-Audio/releases/v1.3.11/firmware-1B1170_Z2G.bin",
+        "1B11178": "/ZacPin-Audio/releases/v1.3.11/firmware-1B11178_Z2G.bin",
+        "1B11183": "/ZacPin-Audio/releases/v1.3.11/firmware-1B11183_Z2G.bin"
+      }
+    },
     {
       "tag": "v1.3.8",
       "date": "2026-02-02T23:50:18.880755Z",

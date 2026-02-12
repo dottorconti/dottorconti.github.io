@@ -63,23 +63,30 @@ async function loadVersions() {
 
         // Load main releases list
         const manifestListUrl = `${RELEASES_BASE_URL}/manifest.json`;
+        console.log('Loading manifest list from:', manifestListUrl);
+        
         const manifestListResponse = await fetch(manifestListUrl);
 
         if (!manifestListResponse.ok) {
-            throw new Error(`Release list not found: ${manifestListResponse.status}`);
+            throw new Error(`Release list not found: ${manifestListResponse.status} from ${manifestListUrl}`);
         }
 
         const manifestList = await manifestListResponse.json();
+        console.log('Manifest list loaded:', manifestList);
+        console.log(`Found ${manifestList.releases?.length || 0} releases`);
         
         // Load each release's manifest
         releases = [];
         for (const releaseInfo of manifestList.releases) {
             try {
                 const manifestUrl = `https://dottorconti.github.io${releaseInfo.manifest_url}`;
+                console.log(`Fetching manifest for ${releaseInfo.tag_name} from: ${manifestUrl}`);
+                
                 const manifestResponse = await fetch(manifestUrl);
                 
                 if (manifestResponse.ok) {
                     const buildManifest = await manifestResponse.json();
+                    console.log(`Loaded manifest for ${releaseInfo.tag_name}:`, buildManifest);
                     
                     releases.push({
                         id: releaseInfo.tag_name,
@@ -88,14 +95,18 @@ async function loadVersions() {
                         published_at: new Date().toISOString(),
                         manifest: buildManifest
                     });
+                } else {
+                    console.warn(`Failed to load manifest for ${releaseInfo.tag_name}: ${manifestResponse.status}`);
                 }
             } catch (error) {
                 console.warn(`Could not load manifest for ${releaseInfo.tag_name}:`, error);
             }
         }
 
+        console.log(`Successfully loaded ${releases.length} releases`);
+        
         if (releases.length === 0) {
-            throw new Error('No releases found');
+            throw new Error('No releases found or all manifest loads failed');
         }
 
         populateVersionSelector(releases);

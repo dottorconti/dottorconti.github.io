@@ -1,0 +1,50 @@
+{
+  "builds": [
+    {
+      "key": "1B1125_v1",
+      "chipFamily": "ESP32",
+      "name": "ZacPin 1B1125 v1",
+      "parts": [
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/bootloader.bin",
+          "offset": "0x1000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/partitions.bin",
+          "offset": "0x8000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/boot_app0.bin",
+          "offset": "0xe000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/firmware-1B1125_Z1G.bin",
+          "offset": "0x10000"
+        }
+      ]
+    },
+    {
+      "key": "1B1146_v2",
+      "chipFamily": "ESP32",
+      "name": "ZacPin 1B1146 v2",
+      "parts": [
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/bootloader.bin",
+          "offset": "0x1000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/partitions.bin",
+          "offset": "0x8000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/boot_app0.bin",
+          "offset": "0xe000"
+        },
+        {
+          "path": "https://dottorconti.github.io/static/ZacPin-Audio/releases/v1.3.12/firmware-1B1146_v2_Z1GAudio.bin",
+          "offset": "0x10000"
+        }
+      ]
+    }
+  ]
+}

@@ -3,9 +3,8 @@
  * Manages firmware selection, download, and flashing via Web Serial API
  */
 
-// Configuration - GitHub Releases
-const GITHUB_REPO = 'dottorconti/ZacPin-Audio';
-const GITHUB_API_BASE = `https://api.github.com/repos/${GITHUB_REPO}`;
+// Configuration - Using local static files instead of GitHub API (private repo)
+const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 
 // Board definitions
 const BOARDS = [
@@ -56,25 +55,35 @@ function populateBoardSelector() {
 }
 
 /**
- * Load available firmware versions from local manifest
+ * Load available firmware versions from static manifest files
  */
 async function loadVersions() {
     try {
         showStatus('Loading available versions...', 'info');
 
-        const response = await fetch(`${GITHUB_API_BASE}/releases?per_page=50`);
+        // Load manifest.json from static releases directory
+        const manifestUrl = `${RELEASES_BASE_URL}/manifest.json`;
+        const response = await fetch(manifestUrl);
 
         if (!response.ok) {
-            throw new Error(`GitHub Releases not found: ${response.status}`);
+            throw new Error(`Manifest not found: ${response.status}`);
         }
 
-        const data = await response.json();
-        releases = Array.isArray(data) ? data.filter(r => !r.draft) : [];
-
-        if (!releases.length) {
-            showStatus('No firmware releases found.', 'warning');
-            return;
-        }
+        const manifest = await response.json();
+        
+        // Create release-like objects from manifest
+        releases = [
+            {
+                id: manifest.version,
+                tag_name: manifest.version,
+                name: `Release ${manifest.version}`,
+                published_at: new Date().toISOString(),
+                assets: manifest.builds.flatMap(build => [
+                    { name: build.firmware_url.split('/').pop(), browser_download_url: build.firmware_url }
+                ]),
+                manifest: manifest
+            }
+        ];
 
         populateVersionSelector(releases);
         if (selectedRelease) {
@@ -84,7 +93,7 @@ async function loadVersions() {
         hideStatus();
 
     } catch (error) {
-        console.error('Error loading releases:', error);
+        console.error('Error loading versions:', error);
         showStatus(`Error loading versions: ${error.message}`, 'error');
     }
 }
@@ -220,22 +229,13 @@ async function getReleaseManifest(release) {
         return releaseManifestCache.get(release.id);
     }
 
-    const assets = Array.isArray(release.assets) ? release.assets : [];
-    const manifestAsset = assets.find(asset => asset.name === 'manifest.json') ||
-        assets.find(asset => asset.name && asset.name.toLowerCase().endsWith('manifest.json'));
-
-    if (!manifestAsset || !manifestAsset.browser_download_url) {
-        throw new Error('manifest.json not found in release assets');
+    // If manifest is already stored in release object, use it
+    if (release.manifest) {
+        releaseManifestCache.set(release.id, release.manifest);
+        return release.manifest;
     }
 
-    const response = await fetch(manifestAsset.browser_download_url, { cache: 'no-cache' });
-    if (!response.ok) {
-        throw new Error(`Manifest download failed: ${response.status}`);
-    }
-
-    const manifest = await response.json();
-    releaseManifestCache.set(release.id, manifest);
-    return manifest;
+    throw new Error('Manifest not available');
 }
 
 function buildInstallManifest(release, releaseManifest, board) {

@@ -1,71 +1,10 @@
 {
-  "name": "ZacPin Audio Firmware",
-  "version": "v1.3.7",
-  "branch": "v1.3.7",
-  "build_date": "2026-02-02T15:07:56.331884",
-  "builds": [
+  "latest": "v1.3.12",
+  "releases": [
     {
-      "key": "1B1125_v1",
-      "name": "1B1125 (Z1G Classic)",
-      "board": "1B1125",
-      "model": "Z1G",
-      "variant": "1",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B1125_Z1G.bin",
-      "sha256": "332afa2d0412eb0cab96b80697e863d36c8f7e6cef0dabf9fd40c883019d43ea"
-    },
-    {
-      "key": "1B1146_v1",
-      "name": "1B1146 v1 (Z1G Audio)",
-      "board": "1B1146",
-      "model": "Z1G_Audio",
-      "variant": "1",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B1146_v1_Z1GAudio.bin",
-      "sha256": "c34a168cdf8f43fc7fbba0ddae6e62abfbfd107206df826bdb76fd1f91ddd6b2"
-    },
-    {
-      "key": "1B1146_v2",
-      "name": "1B1146 v2 (Z1G Audio 2)",
-      "board": "1B1146",
-      "model": "Z1G_Audio",
-      "variant": "2",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B1146_v2_Z1GAudio.bin",
-      "sha256": "779afcfb6c2fc937914908b056b1c18fd07e702d2835e102b3a53cc78d77f4f0"
-    },
-    {
-      "key": "1B11136",
-      "name": "1B11136 (Z2G)",
-      "board": "1B11136",
-      "model": "Z2G",
-      "variant": "1",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B11136_Z2G.bin",
-      "sha256": "64968f48b723dd7fc62efdaea3e75ecfc30bd2e6902bc3f0c0bd1a63ec6482ec"
-    },
-    {
-      "key": "1B1170",
-      "name": "1B1170 (Z2G)",
-      "board": "1B1170",
-      "model": "Z2G",
-      "variant": "2",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B1170_Z2G.bin",
-      "sha256": "69ec58b9c385ac969cf0c6d81a9961e063efb6cc5fae307d926cd55f96cf9965"
-    },
-    {
-      "key": "1B11178",
-      "name": "1B11178 (Z2G)",
-      "board": "1B11178",
-      "model": "Z2G",
-      "variant": "3",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B11178_Z2G.bin",
-      "sha256": "a5169235dfc660ffe8372a07113e916603f405fa0e65963564e335a27a7ab554"
-    },
-    {
-      "key": "1B11183",
-      "name": "1B11183 (Z2G)",
-      "board": "1B11183",
-      "model": "Z2G",
-      "variant": "4",
-      "firmware_url": "https://github.com/dottorconti/ZacPin-Audio/releases/download/v1.3.7/firmware-1B11183_Z2G.bin",
-      "sha256": "d1490cd22185d7a4e6d1cb6d226d3a90d664e7fbd1a9cdeeffe205aedfe36cf1"
+      "tag_name": "v1.3.12",
+      "published_at": "2026-02-12T01:30:00Z",
+      "manifest_url": "/ZacPin-Audio/releases/v1.3.12/manifest.json"
     }
   ]
 }

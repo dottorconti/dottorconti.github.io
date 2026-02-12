@@ -4,14 +4,6 @@
     {
       "tag_name": "v1.3.12",
       "manifest_url": "/static/ZacPin-Audio/releases/v1.3.12/manifest.json"
-    },
-    {
-      "tag_name": "v1.3.11",
-      "manifest_url": "/static/ZacPin-Audio/releases/v1.3.11/manifest.json"
-    },
-    {
-      "tag_name": "v1.3.8",
-      "manifest_url": "/static/ZacPin-Audio/releases/v1.3.8/manifest.json"
     }
   ]
 }

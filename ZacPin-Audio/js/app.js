@@ -17,45 +17,10 @@ const BOARDS = [
         mcu: 'ESP32'
     },
     {
-        key: '1B1146_v1',
-        name: '1B1146 v1 (Z1G Audio)',
-        model: 'Z1G_Audio',
-        description: 'Zaccaria 1G Audio - Space Shuttle, Earth Wind Fire',
-        mcu: 'ESP32'
-    },
-    {
         key: '1B1146_v2',
         name: '1B1146 v2 (Z1G Audio 2)',
         model: 'Z1G_Audio',
         description: 'Zaccaria 1G Audio 2 - Locomotion variant',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11136',
-        name: '1B11136 (Z2G)',
-        model: 'Z2G',
-        description: 'Zaccaria 2G - Variant 1B11136',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B1170',
-        name: '1B1170 (Z2G)',
-        model: 'Z2G',
-        description: 'Zaccaria 2G - Variant 1B1170',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11178',
-        name: '1B11178 (Z2G)',
-        model: 'Z2G',
-        description: 'Zaccaria 2G - Variant 1B11178',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11183',
-        name: '1B11183 (Z2G)',
-        model: 'Z2G',
-        description: 'Zaccaria 2G - Variant 1B11183',
         mcu: 'ESP32'
     }
 ];

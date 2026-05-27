@@ -3,10 +3,14 @@
   "version": "v1.5.0",
   "branch": "security",
   "build_date": "2026-05-27T22:20:16.743707+00:00",
+  "compatible_boards": [
+    "1B1125",
+    "1B1146/2"
+  ],
   "builds": [
     {
       "key": "1B1125_v1",
-      "name": "1B1125 (Z1G Classic)",
+      "name": "1B1125 (Giochi compatibili)",
       "board": "1B1125",
       "model": "Z1G",
       "variant": "1",
@@ -33,7 +37,7 @@
     },
     {
       "key": "1B1146_v2",
-      "name": "1B1146 v2 (Z1G Audio 2)",
+      "name": "1B1146/2 (Locomotion, Space Shuttle, Earth Wind Fire)",
       "board": "1B1146",
       "model": "Z1G_Audio",
       "variant": "2",

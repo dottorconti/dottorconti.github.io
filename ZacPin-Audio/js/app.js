@@ -177,7 +177,7 @@ function onBoardSelected(event) {
  * Handle version selection
  */
 function onVersionSelected(event) {
-    const releaseId = Number(event.target.value);
+    const releaseId = event.target.value;
     selectedRelease = releases.find(r => r.id === releaseId) || null;
 
     if (!selectedRelease) {
@@ -335,11 +335,18 @@ function resolveAssetUrl(value, assetMap) {
         return null;
     }
 
-    if (/^https?:\/\//i.test(value)) {
-        return value;
+    const candidate = assetMap[value] || value;
+
+    if (/^https?:\/\//i.test(candidate)) {
+        return candidate;
     }
 
-    return assetMap[value] || value;
+    try {
+        return new URL(candidate, window.location.origin).toString();
+    } catch (error) {
+        console.warn('Invalid asset URL:', candidate, error);
+        return null;
+    }
 }
 
 function extractParts(buildInfo, assetMap) {

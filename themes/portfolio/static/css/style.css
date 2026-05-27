@@ -212,19 +212,20 @@ section h2 {
 }
 
 .changelog-row {
-    display: grid;
-    grid-template-columns: minmax(190px, 220px) 1fr;
-    column-gap: 1.25rem;
-    align-items: start;
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
 }
 
 .changelog-date {
     color: var(--text-light);
     white-space: nowrap;
+    flex: 0 0 90px;
 }
 
 .changelog-text {
     line-height: 1.5;
+    flex: 1;
 }
 
 /* Post Content */
@@ -324,8 +325,4 @@ section h2 {
         grid-template-columns: 1fr;
     }
 
-    .changelog-row {
-        grid-template-columns: 1fr;
-        row-gap: 0.2rem;
-    }
 }

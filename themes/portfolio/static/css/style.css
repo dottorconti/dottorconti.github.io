@@ -193,6 +193,40 @@ section h2 {
     margin-bottom: 0.5rem;
 }
 
+.recent-posts {
+    padding-top: 0.75rem;
+}
+
+.recent-posts .post-item {
+    padding: 0.75rem 0 0;
+    border-bottom: none;
+}
+
+.recent-posts .post-item h3 {
+    margin-bottom: 0.75rem;
+}
+
+.changelog-list {
+    display: grid;
+    row-gap: 0.85rem;
+}
+
+.changelog-row {
+    display: grid;
+    grid-template-columns: minmax(190px, 220px) 1fr;
+    column-gap: 1.25rem;
+    align-items: start;
+}
+
+.changelog-date {
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.changelog-text {
+    line-height: 1.5;
+}
+
 /* Post Content */
 .post {
     max-width: 800px;
@@ -288,5 +322,10 @@ section h2 {
     
     .projects-grid {
         grid-template-columns: 1fr;
+    }
+
+    .changelog-row {
+        grid-template-columns: 1fr;
+        row-gap: 0.2rem;
     }
 }

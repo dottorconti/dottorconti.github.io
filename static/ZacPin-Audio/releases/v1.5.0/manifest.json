@@ -5,7 +5,8 @@
   "build_date": "2026-05-27T22:20:16.743707+00:00",
   "compatible_boards": [
     "1B1125",
-    "1B1146/2"
+    "1B1146/2",
+    "1B11136"
   ],
   "builds": [
     {
@@ -58,6 +59,33 @@
         },
         {
           "path": "/ZacPin-Audio/releases/v1.5.0/firmware-1B1146_v2_Z1GAudio.bin",
+          "offset": "0x10000"
+        }
+      ]
+    },
+    {
+      "key": "1B11136_v1",
+      "name": "1B11136 (Farfalla, Devil Riders, Time Machine, Magic Castle, and Robot)",
+      "board": "1B11136",
+      "model": "Z2G",
+      "variant": "1",
+      "chipFamily": "ESP32",
+      "firmware_url": "/ZacPin-Audio/releases/v1.5.0/firmware-1B11136_Z2G.bin",
+      "parts": [
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.0/bootloader.bin",
+          "offset": "0x1000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.0/partitions.bin",
+          "offset": "0x8000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.0/boot_app0.bin",
+          "offset": "0xe000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.0/firmware-1B11136_Z2G.bin",
           "offset": "0x10000"
         }
       ]

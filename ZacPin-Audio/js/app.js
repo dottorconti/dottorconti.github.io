@@ -184,7 +184,7 @@ function onBoardSelected(event) {
  * Handle version selection
  */
 function onVersionSelected(event) {
-    const releaseId = Number(event.target.value);
+    const releaseId = event.target.value;
     selectedRelease = releases.find(r => r.id === releaseId) || null;
 
     if (!selectedRelease) {

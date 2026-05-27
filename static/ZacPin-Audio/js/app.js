@@ -10,7 +10,7 @@ const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 const BOARDS = [
     {
         key: '1B1125_v1',
-        name: '1B1125 (Giochi compatibili)',
+        name: '1B1125 (Shooting the Rapids, Hot Wheels, Fire Mountain, Star Gods(*))',
         model: 'Z1G',
         description: 'Zaccaria 1G - Shooting the Rapids, Hot Wheels, Fire Mountain',
         mcu: 'ESP32'
@@ -20,6 +20,13 @@ const BOARDS = [
         name: '1B1146/2 (Locomotion, Space Shuttle, Earth Wind Fire)',
         model: 'Z1G_Audio',
         description: 'Zaccaria 1G Audio 2 - Locomotion variant',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B11136_v1',
+        name: '1B11136 (Farfalla, Devil Riders, Time Machine, Magic Castle, and Robot)',
+        model: 'Z2G',
+        description: 'Zaccaria 2G - Farfalla, Devil Riders, Time Machine, Magic Castle, Robot',
         mcu: 'ESP32'
     }
 ];

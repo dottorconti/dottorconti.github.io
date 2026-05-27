@@ -10,16 +10,23 @@ const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 const BOARDS = [
     {
         key: '1B1125_v1',
-        name: '1B1125 (Giochi compatibili)',
+        name: '1B1125 (Z1G Classic)',
         model: 'Z1G',
         description: 'Zaccaria 1G - Shooting the Rapids, Hot Wheels, Fire Mountain',
         mcu: 'ESP32'
     },
     {
         key: '1B1146_v2',
-        name: '1B1146/2 (Locomotion, Space Shuttle, Earth Wind Fire)',
+        name: '1B1146 v2 (Z1G Audio 2)',
         model: 'Z1G_Audio',
         description: 'Zaccaria 1G Audio 2 - Locomotion variant',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B11136_v1',
+        name: '1B11136 (Z2G)',
+        model: 'Z2G',
+        description: 'Zaccaria 2G - Farfalla, Devil Riders, Time Machine, Magic Castle, Robot',
         mcu: 'ESP32'
     }
 ];
@@ -177,7 +184,7 @@ function onBoardSelected(event) {
  * Handle version selection
  */
 function onVersionSelected(event) {
-    const releaseId = event.target.value;
+    const releaseId = Number(event.target.value);
     selectedRelease = releases.find(r => r.id === releaseId) || null;
 
     if (!selectedRelease) {
@@ -335,18 +342,11 @@ function resolveAssetUrl(value, assetMap) {
         return null;
     }
 
-    const candidate = assetMap[value] || value;
-
-    if (/^https?:\/\//i.test(candidate)) {
-        return candidate;
+    if (/^https?:\/\//i.test(value)) {
+        return value;
     }
 
-    try {
-        return new URL(candidate, window.location.origin).toString();
-    } catch (error) {
-        console.warn('Invalid asset URL:', candidate, error);
-        return null;
-    }
+    return assetMap[value] || value;
 }
 
 function extractParts(buildInfo, assetMap) {

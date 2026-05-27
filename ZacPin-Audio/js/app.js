@@ -61,34 +61,57 @@ async function loadVersions() {
     try {
         showStatus('Loading available versions...', 'info');
 
-        // Load manifest.json from static releases directory
-        const manifestUrl = `${RELEASES_BASE_URL}/manifest.json`;
-        const response = await fetch(manifestUrl);
+        // Load main releases list
+        const manifestListUrl = `${RELEASES_BASE_URL}/manifest.json`;
+        console.log('Loading manifest list from:', manifestListUrl);
+        
+        const manifestListResponse = await fetch(manifestListUrl);
 
-        if (!response.ok) {
-            throw new Error(`Manifest not found: ${response.status}`);
+        if (!manifestListResponse.ok) {
+            throw new Error(`Release list not found: ${manifestListResponse.status} from ${manifestListUrl}`);
         }
 
-        const manifest = await response.json();
+        const manifestList = await manifestListResponse.json();
+        console.log('Manifest list loaded:', manifestList);
+        console.log(`Found ${manifestList.releases?.length || 0} releases`);
         
-        // Create release-like objects from manifest
-        releases = [
-            {
-                id: manifest.version,
-                tag_name: manifest.version,
-                name: `Release ${manifest.version}`,
-                published_at: new Date().toISOString(),
-                assets: manifest.builds.flatMap(build => [
-                    { name: build.firmware_url.split('/').pop(), browser_download_url: build.firmware_url }
-                ]),
-                manifest: manifest
+        // Load each release's manifest
+        releases = [];
+        for (const releaseInfo of manifestList.releases) {
+            try {
+                const manifestUrl = `https://dottorconti.github.io${releaseInfo.manifest_url}`;
+                console.log(`Fetching manifest for ${releaseInfo.tag_name} from: ${manifestUrl}`);
+                
+                const manifestResponse = await fetch(manifestUrl);
+                
+                if (manifestResponse.ok) {
+                    const buildManifest = await manifestResponse.json();
+                    console.log(`Loaded manifest for ${releaseInfo.tag_name}:`, buildManifest);
+                    
+                    releases.push({
+                        id: releaseInfo.tag_name,
+                        tag_name: releaseInfo.tag_name,
+                        name: `Release ${releaseInfo.tag_name}`,
+                        published_at: new Date().toISOString(),
+                        manifest: buildManifest
+                    });
+                } else {
+                    console.warn(`Failed to load manifest for ${releaseInfo.tag_name}: ${manifestResponse.status}`);
+                }
+            } catch (error) {
+                console.warn(`Could not load manifest for ${releaseInfo.tag_name}:`, error);
             }
-        ];
+        }
+
+        console.log(`Successfully loaded ${releases.length} releases`);
+        
+        if (releases.length === 0) {
+            throw new Error('No releases found or all manifest loads failed');
+        }
 
         populateVersionSelector(releases);
-        if (selectedRelease) {
-            renderVersionInfo(selectedRelease);
-        }
+        selectedRelease = releases[0];
+        renderVersionInfo(selectedRelease);
         updateFlashButtonState();
         hideStatus();
 
@@ -170,11 +193,11 @@ function onVersionSelected(event) {
 
 function renderVersionInfo(release) {
     const date = release.published_at ? new Date(release.published_at) : null;
-    const assetCount = release.assets ? release.assets.length : 0;
+    const boardCount = release.manifest?.builds?.length || 0;
 
     document.getElementById('version-info').innerHTML = `
         <strong>${release.tag_name}</strong>${date ? ` - ${date.toLocaleDateString()}` : ''}<br>
-        ${assetCount} assets available
+        ${boardCount} boards available
     `;
 }
 

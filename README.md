@@ -1,4 +1,4 @@
-# Dottorconti GitHub Pages
+# DottorConti GitHub Pages
 
 Visit [dottorconti.net](https://www.dottorconti.net) for detailed technical documentation.
 

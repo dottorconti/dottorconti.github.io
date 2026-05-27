@@ -1,8 +1,8 @@
 {
   "name": "ZacPin Audio Firmware",
-  "version": "v1.3.12",
-  "branch": "main",
-  "build_date": "2026-02-12T01:30:00.000000",
+  "version": "v1.5.0",
+  "branch": "security",
+  "build_date": "2026-05-27T22:20:16.743707+00:00",
   "builds": [
     {
       "key": "1B1125_v1",
@@ -11,22 +11,22 @@
       "model": "Z1G",
       "variant": "1",
       "chipFamily": "ESP32",
-      "firmware_url": "/ZacPin-Audio/releases/v1.3.12/firmware-1B1125_Z1G.bin",
+      "firmware_url": "/ZacPin-Audio/releases/v1.5.0/firmware-1B1125_Z1G.bin",
       "parts": [
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/bootloader.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/bootloader.bin",
           "offset": "0x1000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/partitions.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/partitions.bin",
           "offset": "0x8000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/boot_app0.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/boot_app0.bin",
           "offset": "0xe000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/firmware-1B1125_Z1G.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/firmware-1B1125_Z1G.bin",
           "offset": "0x10000"
         }
       ]
@@ -38,22 +38,22 @@
       "model": "Z1G_Audio",
       "variant": "2",
       "chipFamily": "ESP32",
-      "firmware_url": "/ZacPin-Audio/releases/v1.3.12/firmware-1B1146_v2_Z1GAudio.bin",
+      "firmware_url": "/ZacPin-Audio/releases/v1.5.0/firmware-1B1146_v2_Z1GAudio.bin",
       "parts": [
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/bootloader.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/bootloader.bin",
           "offset": "0x1000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/partitions.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/partitions.bin",
           "offset": "0x8000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/boot_app0.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/boot_app0.bin",
           "offset": "0xe000"
         },
         {
-          "path": "/ZacPin-Audio/releases/v1.3.12/firmware-1B1146_v2_Z1GAudio.bin",
+          "path": "/ZacPin-Audio/releases/v1.5.0/firmware-1B1146_v2_Z1GAudio.bin",
           "offset": "0x10000"
         }
       ]

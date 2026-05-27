@@ -1,10 +1,7 @@
 {{ define "main" }}
 <div class="hero">
     <div class="container">
-        <h1>{{ .Site.Title }}</h1>
-        <p class="tagline">{{ .Site.Params.tagline }}</p>
         <div class="hero-links">
-            <a href="https://github.com/{{ .Site.Params.github }}" target="_blank" class="btn">GitHub</a>
             <a href="https://github.com/dottorconti?tab=repositories" target="_blank" class="btn btn-primary">View Projects</a>
         </div>
     </div>
@@ -37,13 +34,9 @@
 
     <section class="recent-posts">
         <h2>Latest Updates</h2>
-        {{ range first 3 (where .Site.RegularPages "Section" "blog") }}
         <article class="post-item">
-            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-            <p class="post-meta">{{ .Date.Format "January 2, 2006" }}</p>
-            <p>{{ .Summary }}</p>
+            <p><a href="https://dottorconti.github.io/ZacPin-Audio/" target="_blank">firmware tool implemented for ZacPin Audio</a></p>
         </article>
-        {{ end }}
     </section>
 </div>
 {{ end }}

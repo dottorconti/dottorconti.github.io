@@ -12,6 +12,10 @@ Qui puoi aggiornare il firmware della scheda **ZacPin Audio** direttamente dal b
 
 ➡️ Avvia il tool: [ZacPin Audio Firmware Installer](/ZacPin-Audio/)
 
-Se preferisci la documentazione completa:
-- [Repository GitHub](https://github.com/dottorconti/ZacPin-Audio)
-- [Wiki](https://github.com/dottorconti/ZacPin-Audio/wiki)
+You can update the **ZacPin Audio** board firmware directly from your browser (USB Web Serial).
+
+- Use **Chrome/Edge**
+- Connect the board via USB
+- Select model and version, then start flashing
+
+➡️ Launch the tool: [ZacPin Audio Firmware Installer](/ZacPin-Audio/)

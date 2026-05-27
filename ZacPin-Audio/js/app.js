@@ -273,11 +273,17 @@ function buildInstallManifest(release, releaseManifest, board) {
         throw new Error('Invalid manifest format in release');
     }
 
+    const boardId = (board.key || '').split('_')[0];
+
     const buildInfo = releaseManifest.builds.find(build =>
         build.key === board.key ||
+        build.key === boardId ||
+        (boardId && typeof build.key === 'string' && build.key.startsWith(`${boardId}_`)) ||
         build.board === board.key ||
+        build.board === boardId ||
         build.board_key === board.key ||
         build.boardName === board.key ||
+        build.model === board.model ||
         build.id === board.key
     );
 

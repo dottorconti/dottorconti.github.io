@@ -2,7 +2,7 @@
   "name": "ZacPin Audio Firmware",
   "version": "v1.5.0",
   "branch": "security",
-  "build_date": "2026-05-27T23:09:27.244400+00:00",
+  "build_date": "2026-05-28T22:17:26.028952+00:00",
   "builds": [
     {
       "key": "1B1125_v1",

@@ -11,7 +11,14 @@
     <div class="container">
         <!-- HEADER -->
         <header class="header">
-            <h1>🎵 ZacPin Audio Firmware Installer</h1>
+            <div class="header-brand">
+                <div class="brand-sphere" aria-hidden="true">
+                    <span class="sphere-core"></span>
+                    <span class="sphere-ring ring-1"></span>
+                    <span class="sphere-ring ring-2"></span>
+                </div>
+                <h1>ZacPin Audio Firmware Installer</h1>
+            </div>
             <p class="subtitle">Flash firmware via USB Web Serial</p>
         </header>
 
@@ -26,7 +33,6 @@
                         <option value="">-- Select a board --</option>
                         <!-- Options will be populated by JavaScript -->
                     </select>
-                    <p>(*) check your version board</p>
                     <p class="board-info" id="board-info"></p>
                 </div>
             </section>
@@ -122,7 +128,8 @@
 
         <!-- FOOTER -->
         <footer class="footer">
-            <p>Flasher powered by <a href="https://esphome.github.io/esp-web-tools/" target="_blank">ESP Web Tools</a>.</p>
+            <p>🔧 <a href="https://github.com/dottorconti/ZacPin-Audio" target="_blank">GitHub Repository</a> | 
+               📖 <a href="https://github.com/dottorconti/ZacPin-Audio/wiki" target="_blank">Documentation</a></p>
             <p>Made with ❤️ for Flipper restoration enthusiasts</p>
         </footer>
     </div>

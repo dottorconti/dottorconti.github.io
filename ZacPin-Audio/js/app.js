@@ -10,7 +10,7 @@ const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 const BOARDS = [
     {
         key: '1B1125_v1',
-        name: '1B1125 (Shooting the Rapids, Hot Wheels, Fire Mountain, Star Gods(*))',
+        name: '1B1125 (Z1G Classic)',
         model: 'Z1G',
         description: 'Zaccaria 1G - Shooting the Rapids, Hot Wheels, Fire Mountain',
         mcu: 'ESP32'
@@ -24,7 +24,7 @@ const BOARDS = [
     },
     {
         key: '1B11136_v1',
-        name: '1B11136 (Farfalla, Devil Riders, Time Machine, Magic Castle, and Robot)',
+        name: '1B11136 (Z2G)',
         model: 'Z2G',
         description: 'Zaccaria 2G - Farfalla, Devil Riders, Time Machine, Magic Castle, Robot',
         mcu: 'ESP32'
@@ -184,7 +184,7 @@ function onBoardSelected(event) {
  * Handle version selection
  */
 function onVersionSelected(event) {
-    const releaseId = event.target.value;
+    const releaseId = Number(event.target.value);
     selectedRelease = releases.find(r => r.id === releaseId) || null;
 
     if (!selectedRelease) {
@@ -273,17 +273,11 @@ function buildInstallManifest(release, releaseManifest, board) {
         throw new Error('Invalid manifest format in release');
     }
 
-    const boardId = (board.key || '').split('_')[0];
-
     const buildInfo = releaseManifest.builds.find(build =>
         build.key === board.key ||
-        build.key === boardId ||
-        (boardId && typeof build.key === 'string' && build.key.startsWith(`${boardId}_`)) ||
         build.board === board.key ||
-        build.board === boardId ||
         build.board_key === board.key ||
         build.boardName === board.key ||
-        build.model === board.model ||
         build.id === board.key
     );
 

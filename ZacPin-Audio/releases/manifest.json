@@ -1,6 +1,11 @@
 {
-  "latest": "v1.5.1",
+  "latest": "v1.5.2",
   "releases": [
+    {
+      "tag_name": "v1.5.2",
+      "published_at": "2026-10-26T22:55:50Z",
+      "manifest_url": "/ZacPin-Audio/releases/v1.5.2/manifest.json"
+    },
     {
       "tag_name": "v1.5.1",
       "published_at": "2026-10-26T13:37:48Z",

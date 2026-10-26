@@ -9,24 +9,52 @@ const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 // Board definitions
 const BOARDS = [
     {
-        key: '1B1125_v1',
-        name: '1B1125 (Shooting the Rapids, Hot Wheels, Fire Mountain, Star Gods(*))',
-        model: 'Z1G',
-        description: 'Zaccaria 1G - Shooting the Rapids, Hot Wheels, Fire Mountain',
+        key: '1B1125',
+        name: '1B1125 (Z1G Classic)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B1125 from device Web UI after flash',
         mcu: 'ESP32'
     },
     {
-        key: '1B1146_v2',
-        name: '1B1146/2 (Locomotion, Space Shuttle, Earth Wind Fire)',
-        model: 'Z1G_Audio',
-        description: 'Zaccaria 1G Audio 2 - Locomotion variant',
+        key: '1B1146',
+        name: '1B1146 (Space Shuttle / EWF)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B1146 from device Web UI after flash',
         mcu: 'ESP32'
     },
     {
-        key: '1B11136_v1',
-        name: '1B11136 (Farfalla, Devil Riders, Time Machine, Magic Castle, and Robot)',
-        model: 'Z2G',
-        description: 'Zaccaria 2G - Farfalla, Devil Riders, Time Machine, Magic Castle, Robot',
+        key: '1B1146_2',
+        name: '1B1146/2 (Locomotion)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B1146_2 from device Web UI after flash',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B11136',
+        name: '1B11136 (Z2G)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B11136 from device Web UI after flash',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B1170',
+        name: '1B1170 (Z2G)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B1170 from device Web UI after flash',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B11178',
+        name: '1B11178 (Z2G)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B11178 from device Web UI after flash',
+        mcu: 'ESP32'
+    },
+    {
+        key: '1B11183',
+        name: '1B11183 (Z2G)',
+        model: 'UNIVERSAL',
+        description: 'Universal firmware - select profile 1B11183 from device Web UI after flash',
         mcu: 'ESP32'
     }
 ];
@@ -194,7 +222,7 @@ function onVersionSelected(event) {
     }
 
     renderVersionInfo(selectedRelease);
-    
+
     updateFlashButtonState();
 }
 
@@ -273,17 +301,11 @@ function buildInstallManifest(release, releaseManifest, board) {
         throw new Error('Invalid manifest format in release');
     }
 
-    const boardId = (board.key || '').split('_')[0];
-
     const buildInfo = releaseManifest.builds.find(build =>
         build.key === board.key ||
-        build.key === boardId ||
-        (boardId && typeof build.key === 'string' && build.key.startsWith(`${boardId}_`)) ||
         build.board === board.key ||
-        build.board === boardId ||
         build.board_key === board.key ||
         build.boardName === board.key ||
-        build.model === board.model ||
         build.id === board.key
     );
 
@@ -348,18 +370,11 @@ function resolveAssetUrl(value, assetMap) {
         return null;
     }
 
-    const candidate = assetMap[value] || value;
-
-    if (/^https?:\/\//i.test(candidate)) {
-        return candidate;
+    if (/^https?:\/\//i.test(value)) {
+        return value;
     }
 
-    try {
-        return new URL(candidate, window.location.origin).toString();
-    } catch (error) {
-        console.warn('Invalid asset URL:', candidate, error);
-        return null;
-    }
+    return assetMap[value] || value;
 }
 
 function extractParts(buildInfo, assetMap) {

@@ -9,21 +9,21 @@ const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
 // Board definitions
 const BOARDS = [
     {
-        key: '1B1125_v1',
+        key: '1B1125',
         name: '1B1125 (Z1G Classic)',
         model: 'Z1G',
         description: 'Zaccaria 1G - Shooting the Rapids, Hot Wheels, Fire Mountain',
         mcu: 'ESP32'
     },
     {
-        key: '1B1146_v2',
-        name: '1B1146 v2 (Z1G Audio 2)',
+        key: '1B1146_2',
+        name: '1B1146/2 (Locomotion)',
         model: 'Z1G_Audio',
         description: 'Zaccaria 1G Audio 2 - Locomotion variant',
         mcu: 'ESP32'
     },
     {
-        key: '1B11136_v1',
+        key: '1B11136',
         name: '1B11136 (Z2G)',
         model: 'Z2G',
         description: 'Zaccaria 2G - Farfalla, Devil Riders, Time Machine, Magic Castle, Robot',
@@ -184,7 +184,7 @@ function onBoardSelected(event) {
  * Handle version selection
  */
 function onVersionSelected(event) {
-    const releaseId = Number(event.target.value);
+    const releaseId = event.target.value;
     selectedRelease = releases.find(r => r.id === releaseId) || null;
 
     if (!selectedRelease) {
@@ -194,7 +194,7 @@ function onVersionSelected(event) {
     }
 
     renderVersionInfo(selectedRelease);
-    
+
     updateFlashButtonState();
 }
 

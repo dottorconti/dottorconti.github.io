@@ -1,0 +1,62 @@
+{
+  "name": "ZacPin Audio Firmware",
+  "version": "v1.5.1",
+  "branch": "security",
+  "build_date": "2026-10-26T13:37:48.558177+00:00",
+  "builds": [
+    {
+      "key": "1B1125",
+      "name": "1B1125 (Z1G Classic)",
+      "board": "1B1125",
+      "model": "Z1G",
+      "variant": "1",
+      "chipFamily": "ESP32",
+      "firmware_url": "/ZacPin-Audio/releases/v1.5.1/firmware-1B1125_Z1G.bin",
+      "parts": [
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/bootloader.bin",
+          "offset": "0x1000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/partitions.bin",
+          "offset": "0x8000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/boot_app0.bin",
+          "offset": "0xe000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/firmware-1B1125_Z1G.bin",
+          "offset": "0x10000"
+        }
+      ]
+    },
+    {
+      "key": "1B1146_2",
+      "name": "1B1146/2 (Locomotion)",
+      "board": "1B1146",
+      "model": "Z1G_Audio",
+      "variant": "2",
+      "chipFamily": "ESP32",
+      "firmware_url": "/ZacPin-Audio/releases/v1.5.1/firmware-1B1146_v2_Z1GAudio.bin",
+      "parts": [
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/bootloader.bin",
+          "offset": "0x1000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/partitions.bin",
+          "offset": "0x8000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/boot_app0.bin",
+          "offset": "0xe000"
+        },
+        {
+          "path": "/ZacPin-Audio/releases/v1.5.1/firmware-1B1146_v2_Z1GAudio.bin",
+          "offset": "0x10000"
+        }
+      ]
+    }
+  ]
+}

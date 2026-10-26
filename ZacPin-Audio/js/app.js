@@ -5,56 +5,15 @@
 
 // Configuration - Using local static files instead of GitHub API (private repo)
 const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
+const PINNED_RELEASE_TAG = 'v1.5.2';
 
 // Board definitions
 const BOARDS = [
     {
         key: '1B1125',
-        name: '1B1125 (Z1G Classic)',
+        name: 'Universal (all ZacPin boards)',
         model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B1125 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B1146',
-        name: '1B1146 (Space Shuttle / EWF)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B1146 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B1146_2',
-        name: '1B1146/2 (Locomotion)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B1146_2 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11136',
-        name: '1B11136 (Z2G)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B11136 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B1170',
-        name: '1B1170 (Z2G)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B1170 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11178',
-        name: '1B11178 (Z2G)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B11178 from device Web UI after flash',
-        mcu: 'ESP32'
-    },
-    {
-        key: '1B11183',
-        name: '1B11183 (Z2G)',
-        model: 'UNIVERSAL',
-        description: 'Universal firmware - select profile 1B11183 from device Web UI after flash',
+        description: 'Flash one universal firmware image; select the target board profile in device Web UI after flash',
         mcu: 'ESP32'
     }
 ];
@@ -80,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function populateBoardSelector() {
     const select = document.getElementById('board-select');
+    select.innerHTML = '';
     
     BOARDS.forEach(board => {
         const option = document.createElement('option');
@@ -87,6 +47,15 @@ function populateBoardSelector() {
         option.textContent = board.name;
         select.appendChild(option);
     });
+
+    if (BOARDS.length > 0) {
+        selectedBoard = BOARDS[0];
+        select.value = selectedBoard.key;
+        document.getElementById('board-info').innerHTML = `
+            <strong>${selectedBoard.name}</strong><br>
+            ${selectedBoard.description}
+        `;
+    }
 }
 
 /**
@@ -110,40 +79,42 @@ async function loadVersions() {
         console.log('Manifest list loaded:', manifestList);
         console.log(`Found ${manifestList.releases?.length || 0} releases`);
         
-        // Load each release's manifest
+        // Load only pinned release manifest (single selectable version in UI)
         releases = [];
-        for (const releaseInfo of manifestList.releases) {
-            try {
-                const manifestUrl = `https://dottorconti.github.io${releaseInfo.manifest_url}`;
-                console.log(`Fetching manifest for ${releaseInfo.tag_name} from: ${manifestUrl}`);
-                
-                const manifestResponse = await fetch(manifestUrl);
-                
-                if (manifestResponse.ok) {
-                    const buildManifest = await manifestResponse.json();
-                    console.log(`Loaded manifest for ${releaseInfo.tag_name}:`, buildManifest);
-                    
-                    releases.push({
-                        id: releaseInfo.tag_name,
-                        tag_name: releaseInfo.tag_name,
-                        name: `Release ${releaseInfo.tag_name}`,
-                        published_at: new Date().toISOString(),
-                        manifest: buildManifest
-                    });
-                } else {
-                    console.warn(`Failed to load manifest for ${releaseInfo.tag_name}: ${manifestResponse.status}`);
-                }
-            } catch (error) {
-                console.warn(`Could not load manifest for ${releaseInfo.tag_name}:`, error);
-            }
+        const pinnedReleaseInfo = (manifestList.releases || []).find(r => r.tag_name === PINNED_RELEASE_TAG);
+        if (!pinnedReleaseInfo) {
+            throw new Error(`Pinned release ${PINNED_RELEASE_TAG} not found in releases manifest`);
         }
 
-        console.log(`Successfully loaded ${releases.length} releases`);
+        try {
+            const manifestUrl = `https://dottorconti.github.io${pinnedReleaseInfo.manifest_url}`;
+            console.log(`Fetching manifest for ${pinnedReleaseInfo.tag_name} from: ${manifestUrl}`);
+
+            const manifestResponse = await fetch(manifestUrl);
+            if (manifestResponse.ok) {
+                const buildManifest = await manifestResponse.json();
+                console.log(`Loaded manifest for ${pinnedReleaseInfo.tag_name}:`, buildManifest);
+
+                releases.push({
+                    id: pinnedReleaseInfo.tag_name,
+                    tag_name: pinnedReleaseInfo.tag_name,
+                    name: `Release ${pinnedReleaseInfo.tag_name}`,
+                    published_at: new Date().toISOString(),
+                    manifest: buildManifest
+                });
+            } else {
+                throw new Error(`Failed to load manifest for ${pinnedReleaseInfo.tag_name}: ${manifestResponse.status}`);
+            }
+        } catch (error) {
+            throw new Error(`Could not load pinned release ${PINNED_RELEASE_TAG}: ${error.message}`);
+        }
+
+        console.log(`Successfully loaded ${releases.length} release`);
         
         if (releases.length === 0) {
-            throw new Error('No releases found or all manifest loads failed');
+            throw new Error('No release loaded');
         }
-
+        
         populateVersionSelector(releases);
         selectedRelease = releases[0];
         renderVersionInfo(selectedRelease);
@@ -162,23 +133,19 @@ async function loadVersions() {
 function populateVersionSelector(releases) {
     const select = document.getElementById('version-select');
     select.innerHTML = '';
-    
-    const option = document.createElement('option');
-    option.value = '';
-    option.textContent = '-- Select a version --';
-    select.appendChild(option);
-    
-    releases.forEach((release, index) => {
+
+    releases.forEach((release) => {
         const versionOption = document.createElement('option');
         versionOption.value = release.id;
         const date = release.published_at ? new Date(release.published_at) : null;
         versionOption.textContent = `${release.tag_name}${date ? ` (${date.toLocaleDateString()})` : ''}`;
-        if (index === 0) {
-            versionOption.selected = true;
-            selectedRelease = release;
-        }
         select.appendChild(versionOption);
     });
+
+    if (releases.length > 0) {
+        select.value = releases[0].id;
+        selectedRelease = releases[0];
+    }
 }
 
 /**

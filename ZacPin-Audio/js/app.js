@@ -5,7 +5,7 @@
 
 // Configuration - Using local static files instead of GitHub API (private repo)
 const RELEASES_BASE_URL = 'https://dottorconti.github.io/ZacPin-Audio/releases';
-const PINNED_RELEASE_TAG = 'v1.5.2';
+const PINNED_RELEASE_TAG = 'v1.5.3';
 
 // Board definitions
 const BOARDS = [

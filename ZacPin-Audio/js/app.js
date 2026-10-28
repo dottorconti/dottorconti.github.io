@@ -341,7 +341,7 @@ function resolveAssetUrl(value, assetMap) {
         return value;
     }
 
-    return assetMap[value] || value;
+    return new URL(assetMap[value] || value, window.location.href).href;
 }
 
 function extractParts(buildInfo, assetMap) {
